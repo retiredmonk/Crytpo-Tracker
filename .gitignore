@@ -1,0 +1,28 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- Virtual Environment ---
+venv/
+.env/
+
+# --- Environment Variables ---
+.env
+
+# --- Logs ---
+logs/
+*.log
+
+# --- Database ---
+data/
+*.db
+
+# --- OS Files ---
+.DS_Store
+Thumbs.db
+
+# --- IDE ---
+.vscode/
+.idea/
