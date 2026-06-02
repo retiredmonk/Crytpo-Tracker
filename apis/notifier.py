@@ -1,5 +1,5 @@
 import requests
-from config import BOT_TOKEN, CHAT_ID
+from services.config_service import BOT_TOKEN, CHAT_ID
 
 
 def send_alert(message: str):

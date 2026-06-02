@@ -1,6 +1,6 @@
 import logging, requests, time
 from typing import Optional, Dict
-from errors import APIRateLimitedError, APIResponseError, NetworkError
+from services.error_service import APIRateLimitedError, APIResponseError, NetworkError
 import random
 
 

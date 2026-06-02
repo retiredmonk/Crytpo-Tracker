@@ -1,7 +1,7 @@
-from fetch_prices import fetch_prices
-from db import init_db, add_price
-from alert import check_alerts
-import config
+from apis.fetch_prices import fetch_prices
+from database.db import init_db, add_price
+from services.alert_service import check_alerts
+from services import config_service as config
 import logging
 import time
 

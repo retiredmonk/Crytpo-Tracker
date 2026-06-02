@@ -1,9 +1,7 @@
 import time
-import sqlite3
 
-import config
-from config import ALERT_COOLDOWN, ALERT_THRESHOLD
-from notifier import send_alert
+from config_service import ALERT_COOLDOWN, ALERT_THRESHOLD
+from apis.notifier import send_alert
 
 
 
