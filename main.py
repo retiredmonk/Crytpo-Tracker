@@ -1,45 +1,27 @@
-from apis.fetch_prices import fetch_prices
-from database.db import init_db, add_price
-from services.alert_service import check_alerts
-from services import config_service as config
-import logging
+from clients.fetcher import fetch_prices
+from database.db import init_db, add_price, get_connection
+from services.alerts import check_alerts
+from utils.logger import setup_logging
+from env import get_settings
 import time
 
-def setup_logging():
-    logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
-
-    # Clear existing handlers
-    if logger.hasHandlers():
-        logger.handlers.clear()
-
-    file_handler = logging.FileHandler(config.LOG_PATH)
-    stream_handler = logging.StreamHandler()
-
-    formatter = logging.Formatter(
-        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    )
-
-    file_handler.setFormatter(formatter)
-    stream_handler.setFormatter(formatter)
-
-    logger.addHandler(file_handler)
-    logger.addHandler(stream_handler)
+config = get_settings()
 
 def main():
 
+    connection = get_connection()
     setup_logging()
-    conn, cursor = init_db()
 
-    prices = fetch_prices(config)
+    prices = fetch_prices()
+
     if prices:
-        add_price(cursor, conn, prices)
-        check_alerts(conn, cursor, prices.keys())
+        add_price(connection, prices)
+        check_alerts(connection, prices.keys())
 
-    conn.close()
-
+    connection.commit()
+    connection.close()
 
 if __name__ == "__main__":
     while True:
         main()
-        time.sleep(300)
+        time.sleep(120)

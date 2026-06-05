@@ -1,9 +1,16 @@
 import sqlite3
-from services.config_service import DB_PATH
+from pathlib import Path
 from datetime import datetime, timezone
 
+FILE_PATH =  Path("database/crypto.db")
+
+def get_connection():
+    FILE_PATH.parent.mkdir(exist_ok=True, parents=True)
+    return sqlite3.connect(str(FILE_PATH))
+
 def init_db():
-    connection = sqlite3.connect(DB_PATH)
+
+    connection = get_connection()
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -24,11 +31,12 @@ def init_db():
     """)
 
     connection.commit()
+    connection.close()
 
-    return connection, cursor
 
+def add_price(connection, prices: dict):
 
-def add_price(cursor, connection, prices: dict):
+    cursor = connection.cursor()
     now = int(datetime.now(timezone.utc).timestamp())
 
     sql = """
@@ -42,6 +50,5 @@ def add_price(cursor, connection, prices: dict):
         rows.append([coin, price, now])
 
     cursor.executemany(sql, rows)
-    connection.commit()
 
 
